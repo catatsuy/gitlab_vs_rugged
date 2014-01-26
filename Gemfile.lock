@@ -1,13 +1,17 @@
-GEM
-  remote: https://rubygems.org/
+PATH
+  remote: ../grit
   specs:
-    charlock_holmes (0.6.9.4)
-    diff-lcs (1.2.5)
     gitlab-grit (2.6.3)
       charlock_holmes (~> 0.6.9)
       diff-lcs (~> 1.1)
       mime-types (~> 1.15)
       posix-spawn (~> 0.3.6)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    charlock_holmes (0.6.9.4)
+    diff-lcs (1.2.5)
     mime-types (1.25.1)
     posix-spawn (0.3.8)
     rugged (0.19.0)
@@ -16,5 +20,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  gitlab-grit
+  gitlab-grit!
   rugged

@@ -2,4 +2,4 @@
 source "https://rubygems.org"
 
 gem "rugged"
-gem "gitlab-grit"
+gem "gitlab-grit", path: "../grit"
