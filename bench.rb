@@ -52,4 +52,15 @@ Benchmark.benchmark(caption, 15, format) do |x|
       head_grit.message
     end
   end
+
+  COMMITS_COUNT = 10
+
+  x.report("[grit] commits") do
+    commits = repo_grit.commits('1aeb10a14d5ecf5a10a4536b873c9feb244a7848', COMMITS_COUNT)
+    commits
+    10.times do
+      commits = repo_grit.commits(commits.last.id, COMMITS_COUNT)
+    end
+  end
+
 end
