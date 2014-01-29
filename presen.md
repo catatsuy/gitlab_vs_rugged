@@ -78,15 +78,15 @@
 ## grit/GitLab バグ
 
  * GitLab 周辺の gem は gem として登録されているにも関わらず GitLab 以外から使用することを一切考慮していない
- * 単体で読み込もうとするとあり得ないバグに悩まされることになる
+ * 単体で読み込もうとするとバグに悩まされることになる
  * 自分が遭遇したバグ紹介
 
 ## gitlab_git バグ
 
  * gitlab_git が GitLab で git を実際に触る部分
    * grit を使うのはここ
- * GitLab は Rails アプリなので ActiveSupport が読み込まれるが，gitlab_git は独立した gem なので使うなら別途読み込む必要がある
-   * しかし読み込んでいなかった
+ * GitLab は ActiveSupport が読み込まれるが，gitlab_git は独立した gem なので使うなら読み込む必要
+   * しかし一部しか読み込んでいなかった
    * 具体的には `try` を使用していた
  * プルリク出した
    * [Pull Request #22 · gitlabhq/gitlab_git](https://github.com/gitlabhq/gitlab_git/pull/22)
