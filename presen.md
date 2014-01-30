@@ -1,3 +1,7 @@
+# git を高速に扱うためにどうすればいいのか調べた
+
+まかいぞーしようとしたけど結局無理だったので今回得られた知見紹介
+
 ## grit 特徴
 
  * Git のオブジェクトファイルや，git のコマンドの実行結果をゴリゴリやっている
@@ -17,9 +21,13 @@
  * GitHub も使っているみたい
  * C の API をバインディングしているだけなので git の実装がかなり生で出ている
    * git の内部の知識がないと使うのが難しい
+   * 正直あまりイケてない
  * C 実装だからか，Fork は少ない（スターは多い）
  * rugged に関するドキュメントは少ない
    * libgit2 はある
+ * 将来的には GitLab も使いたいらしい
+   * 本気度は不明
+
 
 ## grit vs rugged
 
@@ -30,14 +38,6 @@
 | speed          |   slow    | high speed  |
 | document       |  little   |   little    |
 
-
-
-## URL
-
- * [gitlabhq/grit](https://github.com/gitlabhq/grit)
- * [libgit2/rugged](https://github.com/libgit2/rugged)
- * [libgit2](http://libgit2.github.com/)
- * [libgit2 API](http://libgit2.github.com/libgit2/#HEAD)
 
 
 ## grit 仕様
@@ -68,18 +68,12 @@
 [grit] commit     1.210000   0.060000   0.000000   0.000000   1.270000 (  1.533623)
 
 
-## URL
-
- * [Git - Git Objects](http://git-scm.com/book/en/Git-Internals-Git-Objects)
- * [Git - Git References](http://git-scm.com/book/en/Git-Internals-Git-References)
- * [Ruby - BundlerでC拡張を含んだgemを公開する - Qiita](http://qiita.com/gam0022/items/2ee82e84e5c9f608eb85)
-
-
 ## grit/GitLab バグ
 
  * GitLab 周辺の gem は gem として登録されているにも関わらず GitLab 以外から使用することを一切考慮していない
  * 単体で読み込もうとするとバグに悩まされることになる
  * 自分が遭遇したバグ紹介
+
 
 ## gitlab_git バグ
 
@@ -91,6 +85,7 @@
  * プルリク出した
    * [Pull Request #22 · gitlabhq/gitlab_git](https://github.com/gitlabhq/gitlab_git/pull/22)
    * 取り込まれない
+
 
 ## grit バグ
 
@@ -114,3 +109,15 @@
  * ドキュメントもないのでソースコードを読む必要があって大変だった
  * ベンチマークを取ったはいいものの rugged が速すぎて比較にならなかった
  * 書き換えるためには rugged のメソッドをよく把握する必要があるので面倒そう
+
+
+## URL
+
+ * [Git - Git Objects](http://git-scm.com/book/en/Git-Internals-Git-Objects)
+ * [Git - Git References](http://git-scm.com/book/en/Git-Internals-Git-References)
+ * [Ruby - BundlerでC拡張を含んだgemを公開する - Qiita](http://qiita.com/gam0022/items/2ee82e84e5c9f608eb85)
+ * [gitlabhq/grit](https://github.com/gitlabhq/grit)
+ * [libgit2/rugged](https://github.com/libgit2/rugged)
+ * [libgit2](http://libgit2.github.com/)
+ * [libgit2 API](http://libgit2.github.com/libgit2/#HEAD)
+ * [Migrate to libgit2 · Issue #3379 · gitlabhq/gitlabhq](https://github.com/gitlabhq/gitlabhq/issues/3379)
