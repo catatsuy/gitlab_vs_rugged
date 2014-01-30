@@ -63,4 +63,18 @@ Benchmark.benchmark(caption, 15, format) do |x|
     end
   end
 
+  commits_rugged = []
+
+  x.report("[rugged] commits") do
+    walker = Rugged::Walker.new(repo_rugged)
+    walker.sorting(Rugged::SORT_TOPO | Rugged::SORT_REVERSE)
+    walker.push('1aeb10a14d5ecf5a10a4536b873c9feb244a7848')
+    walker.each do |c|
+      commits_rugged.push c.oid
+      if commits_rugged.size > 100
+        break
+      end
+    end
+  end
+
 end
