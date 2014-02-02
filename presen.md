@@ -5,9 +5,11 @@
 ## grit 特徴
 
  * Git のオブジェクトファイルや，git のコマンドの実行結果をゴリゴリやっている
-   * 子プロセスの起動など，かなり遅そう
+   * 子プロセスの起動したり，ファイルをパースしたりとかなり遅そう
  * ドキュメントが貧弱
    * ソースコードを読む必要がある
+   * 昔からあるライブラリで，似たようなメソッドが複数あるなど一貫性がない
+   * ソースコードもあまり綺麗でなく，メンテナンスをする気がある人があまりいない印象
  * Ruby 実装で簡単にいじれるので Fork が多い
  * GitLab が使っているのは Fork（今回使用するのはこれ）
  * GitHub 本家も Fork してる（最近更新はない）
@@ -18,15 +20,16 @@
  * libgit2 の Ruby バインディング
    * libgit2 は C 実装で git の再実装に近い
    * 高速であることが期待できる
- * GitHub も使っているみたい
+ * GitHub も使っているらしい
  * C の API をバインディングしているだけなので git の実装がかなり生で出ている
    * git の内部の知識がないと使うのが難しい
-   * 正直あまりイケてない
+   * 正直コマンドラインの使い方しか知らない人には使いにくい
  * C 実装だからか，Fork は少ない（スターは多い）
  * rugged に関するドキュメントは少ない
    * libgit2 はある
  * 将来的には GitLab も使いたいらしい
    * 本気度は不明
+   * [Migrate to libgit2 · Issue #3379 · gitlabhq/gitlabhq](https://github.com/gitlabhq/gitlabhq/issues/3379)
 
 
 ## grit vs rugged
@@ -61,11 +64,11 @@
 
 ## ベンチ結果
 
-                      user     system         cu         cs      total       real
-[rugged] diff     0.420000   0.010000   0.000000   0.000000   0.430000 (  0.426980)
-[grit] diff       4.720000   0.400000   7.120000   1.210000  13.450000 ( 12.906260)
-[rugged] commit   0.000000   0.000000   0.000000   0.000000   0.000000 (  0.004854)
-[grit] commit     1.210000   0.060000   0.000000   0.000000   1.270000 (  1.533623)
+                          user     system         cu         cs      total       real
+    [rugged] diff     0.420000   0.010000   0.000000   0.000000   0.430000 (  0.426980)
+    [grit] diff       4.720000   0.400000   7.120000   1.210000  13.450000 ( 12.906260)
+    [rugged] commit   0.000000   0.000000   0.000000   0.000000   0.000000 (  0.004854)
+    [grit] commit     1.210000   0.060000   0.000000   0.000000   1.270000 (  1.533623)
 
 
 ## grit/GitLab バグ
@@ -83,29 +86,41 @@
    * しかし一部しか読み込んでいなかった
    * 具体的には `try` を使用していた
  * プルリク出した
-   * [Pull Request #22 · gitlabhq/gitlab_git](https://github.com/gitlabhq/gitlab_git/pull/22)
    * 取り込まれない
+   * [Pull Request #22 · gitlabhq/gitlab_git](https://github.com/gitlabhq/gitlab_git/pull/22)
 
 
 ## grit バグ
 
- * そもそも単体で require できない
+ * Gemfile から `path:` 指定で読み込むと require できない
    * `VERSION` ファイルのパスが間違えていて起動できていない
    * すでにプルリクが出ている
-   * [Fixed issue #32 · Pull Request #35 · gitlabhq/grit](https://github.com/gitlabhq/grit/pull/35)
-   * 何ヶ月も取り込まれず放置されている
+   * 何ヶ月も取り込まれず放置されていた
+   * マージしてもらえるように催促コメントする
+   * マージしてもらえた！！
    * 今回のベンチマークにはもちろんこのパッチを適用
+   * [Fixed issue #32 · Pull Request #35 · gitlabhq/grit](https://github.com/gitlabhq/grit/pull/35)
  * ある commit が読み込めない
    * オブジェクトファイルが想定外の形式らしい
    * 正しい挙動が不明なため issue 登録
    * [Issue #37 · gitlabhq/grit](https://github.com/gitlabhq/grit/issues/37)
 
 
+## 催促コメントとマージ
+
+<img src="http://gyazo.com/e83197c0fdc623528b38d811e365c5cc.png">
+
+
+## Thank you
+
+<img src="http://gyazo.com/e83197c0fdc623528b38d811e365c5cc.png">
+
+
 ## まとめ
 
  * GitLab を高速化できないのか模索したら grit を rugged に書き換えればいいのでは？という仮説ができた
  * ベンチマークを取って比較しようとしたが grit とか GitLab 周辺の gem がバギーすぎて大変だった
- * プルリクも出したりしたが，全く取り込まれる様子がない
+ * プルリクも出したりしたが，取り込まれることはあまりないみたい
  * ドキュメントもないのでソースコードを読む必要があって大変だった
  * ベンチマークを取ったはいいものの rugged が速すぎて比較にならなかった
  * 書き換えるためには rugged のメソッドをよく把握する必要があるので面倒そう
@@ -120,4 +135,3 @@
  * [libgit2/rugged](https://github.com/libgit2/rugged)
  * [libgit2](http://libgit2.github.com/)
  * [libgit2 API](http://libgit2.github.com/libgit2/#HEAD)
- * [Migrate to libgit2 · Issue #3379 · gitlabhq/gitlabhq](https://github.com/gitlabhq/gitlabhq/issues/3379)
