@@ -22,7 +22,6 @@ Benchmark.benchmark(caption, 15, format) do |x|
   tmp2.push
   sha1_pairs = tmp1.zip tmp2
 
-
   x.report("[rugged] diff") do
     sha1_pairs.each do |sha1_pair|
       repo_rugged.diff(sha1_pair[0], sha1_pair[1])
@@ -50,30 +49,6 @@ Benchmark.benchmark(caption, 15, format) do |x|
     logs.each do |sha1|
       head_grit = repo_grit.commit(sha1)
       head_grit.message
-    end
-  end
-
-  COMMITS_COUNT = 10
-
-  x.report("[grit] commits") do
-    commits = repo_grit.commits('1aeb10a14d5ecf5a10a4536b873c9feb244a7848', COMMITS_COUNT)
-    commits
-    10.times do
-      commits = repo_grit.commits(commits.last.id, COMMITS_COUNT)
-    end
-  end
-
-  commits_rugged = []
-
-  x.report("[rugged] commits") do
-    walker = Rugged::Walker.new(repo_rugged)
-    walker.sorting(Rugged::SORT_TOPO | Rugged::SORT_REVERSE)
-    walker.push('1aeb10a14d5ecf5a10a4536b873c9feb244a7848')
-    walker.each do |c|
-      commits_rugged.push c.oid
-      if commits_rugged.size > 100
-        break
-      end
     end
   end
 
